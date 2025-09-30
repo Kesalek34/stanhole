@@ -3,14 +3,28 @@ import React, { useState, useEffect } from 'react';
 export default function StanholeTrading() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.pageYOffset > 300);
     };
 
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    // Initial check
+    checkMobile();
+    
+    // Event listeners
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -74,7 +88,8 @@ export default function StanholeTrading() {
       margin: 0,
       padding: 0,
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-      backgroundColor: '#fff'
+      backgroundColor: '#fff',
+      overflowX: 'hidden'
     },
     nav: {
       backgroundColor: '#fff',
@@ -95,10 +110,11 @@ export default function StanholeTrading() {
     },
     logo: {
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      gap: '12px'
     },
     navLinks: {
-      display: 'flex',
+      display: isMobile ? 'none' : 'flex',
       alignItems: 'center',
       gap: '30px'
     },
@@ -106,36 +122,46 @@ export default function StanholeTrading() {
       color: '#111',
       textDecoration: 'none',
       fontWeight: '700',
-      fontSize: '14px',
-      cursor: 'pointer'
+      fontSize: isMobile ? '16px' : '14px',
+      cursor: 'pointer',
+      transition: 'color 0.3s ease'
     },
     contactBtn: {
       backgroundColor: '#1a5490',
       color: '#fff',
-      padding: '10px 24px',
+      padding: isMobile ? '12px 20px' : '10px 24px',
       border: 'none',
       fontWeight: '700',
-      fontSize: '14px',
+      fontSize: isMobile ? '14px' : '14px',
       cursor: 'pointer',
       textDecoration: 'none',
-      display: 'inline-block'
+      display: 'inline-block',
+      borderRadius: '4px',
+      transition: 'background-color 0.3s ease'
     },
     mobileMenuBtn: {
-      display: 'none',
+      display: isMobile ? 'block' : 'none',
       background: 'none',
       border: 'none',
       fontSize: '24px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      color: '#111',
+      padding: '8px'
     },
     mobileMenu: {
-      display: 'none',
+      display: mobileMenuOpen ? 'block' : 'none',
       backgroundColor: '#fff',
       borderTop: '1px solid #e5e5e5',
-      padding: '20px'
+      padding: '20px',
+      position: 'absolute',
+      width: '100%',
+      left: 0,
+      top: '80px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
     },
     main: {
       position: 'relative',
-      height: '100vh',
+      height: isMobile ? '70vh' : '100vh',
       marginTop: '80px',
       backgroundImage: 'url(/assets/main.jpg)',
       backgroundSize: 'cover',
@@ -152,40 +178,47 @@ export default function StanholeTrading() {
       position: 'relative',
       maxWidth: '1200px',
       margin: '0 auto',
-      padding: '0 20px',
+      padding: isMobile ? '0 20px' : '0 20px',
       color: '#fff',
       zIndex: 1
     },
     mainTitle: {
-      fontSize: '64px',
+      fontSize: isMobile ? '36px' : '64px',
       fontWeight: '900',
       lineHeight: '1.1',
-      marginBottom: '30px'
+      marginBottom: isMobile ? '20px' : '30px',
+      textAlign: isMobile ? 'center' : 'left'
     },
     mainSubtitle: {
-      fontSize: '24px',
+      fontSize: isMobile ? '18px' : '24px',
       fontWeight: '700',
-      marginBottom: '20px'
+      marginBottom: isMobile ? '16px' : '20px',
+      textAlign: isMobile ? 'center' : 'left'
     },
     mainText: {
-      fontSize: '18px',
+      fontSize: isMobile ? '16px' : '18px',
       lineHeight: '1.6',
-      marginBottom: '40px',
-      maxWidth: '700px'
+      marginBottom: isMobile ? '30px' : '40px',
+      maxWidth: isMobile ? '100%' : '700px',
+      textAlign: isMobile ? 'center' : 'left'
     },
     heroButtons: {
       display: 'flex',
-      gap: '20px',
-      flexWrap: 'wrap'
+      gap: '16px',
+      flexWrap: 'wrap',
+      justifyContent: isMobile ? 'center' : 'flex-start'
     },
     heroBtn: {
-      padding: '16px 32px',
-      fontSize: '18px',
+      padding: isMobile ? '14px 24px' : '16px 32px',
+      fontSize: isMobile ? '16px' : '18px',
       fontWeight: '700',
       cursor: 'pointer',
       textDecoration: 'none',
       display: 'inline-block',
-      border: 'none'
+      border: 'none',
+      borderRadius: '4px',
+      transition: 'all 0.3s ease',
+      textAlign: 'center'
     },
     heroBtnPrimary: {
       backgroundColor: '#f59e0b',
@@ -198,61 +231,67 @@ export default function StanholeTrading() {
     },
     blueSection: {
       backgroundColor: '#1a5490',
-      padding: '80px 20px',
+      padding: isMobile ? '50px 20px' : '80px 20px',
       textAlign: 'center'
     },
     blueSectionTitle: {
-      fontSize: '56px',
+      fontSize: isMobile ? '32px' : '56px',
       fontWeight: '900',
       color: '#fff',
-      marginBottom: '24px',
-      margin: '0 0 24px 0'
+      marginBottom: isMobile ? '20px' : '24px',
+      margin: isMobile ? '0 0 20px 0' : '0 0 24px 0',
+      lineHeight: '1.2'
     },
     blueSectionText: {
-      fontSize: '24px',
+      fontSize: isMobile ? '18px' : '24px',
       color: '#fff',
       fontWeight: '700',
       maxWidth: '900px',
-      margin: '0 auto'
+      margin: '0 auto',
+      lineHeight: '1.4'
     },
     aboutSection: {
-      padding: '80px 20px',
+      padding: isMobile ? '50px 20px' : '80px 20px',
       backgroundColor: '#f9fafb'
     },
     aboutContainer: {
       maxWidth: '1200px',
       margin: '0 auto',
-      display: 'grid',
+      display: isMobile ? 'block' : 'grid',
       gridTemplateColumns: '1fr 1fr',
-      gap: '60px',
+      gap: isMobile ? '40px' : '60px',
       alignItems: 'center'
     },
     aboutImage: {
       width: '100%',
       height: 'auto',
-      boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+      boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+      borderRadius: '8px',
+      marginBottom: isMobile ? '30px' : '0'
     },
     aboutTitle: {
-      fontSize: '48px',
+      fontSize: isMobile ? '32px' : '48px',
       fontWeight: '900',
-      marginBottom: '24px',
+      marginBottom: isMobile ? '20px' : '24px',
       lineHeight: '1.1',
-      color: '#1a5490'
+      color: '#1a5490',
+      textAlign: isMobile ? 'center' : 'left'
     },
     aboutText: {
-      fontSize: '18px',
+      fontSize: isMobile ? '16px' : '18px',
       lineHeight: '1.8',
       color: '#374151',
-      marginBottom: '24px'
+      marginBottom: isMobile ? '20px' : '24px',
+      textAlign: isMobile ? 'center' : 'left'
     },
     valuesList: {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
+      gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
       gap: '12px',
-      marginBottom: '24px'
+      marginBottom: isMobile ? '20px' : '24px'
     },
     valueItem: {
-      fontSize: '16px',
+      fontSize: isMobile ? '14px' : '16px',
       color: '#374151',
       fontWeight: '600',
       display: 'flex',
@@ -263,53 +302,62 @@ export default function StanholeTrading() {
       display: 'inline-block',
       backgroundColor: '#1a5490',
       color: '#fff',
-      padding: '16px 32px',
+      padding: isMobile ? '14px 28px' : '16px 32px',
       fontWeight: '700',
       textDecoration: 'none',
       cursor: 'pointer',
-      border: 'none'
+      border: 'none',
+      borderRadius: '4px',
+      transition: 'background-color 0.3s ease',
+      textAlign: 'center',
+      width: isMobile ? '100%' : 'auto'
     },
     servicesSection: {
-      padding: '80px 20px',
+      padding: isMobile ? '50px 20px' : '80px 20px',
       backgroundColor: '#1f2937'
     },
     sectionTitle: {
-      fontSize: '48px',
+      fontSize: isMobile ? '32px' : '48px',
       fontWeight: '900',
       color: '#fff',
       textAlign: 'center',
-      marginBottom: '60px'
+      marginBottom: isMobile ? '40px' : '60px',
+      lineHeight: '1.2'
     },
     servicesGrid: {
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(350px, 1fr))',
       gap: '24px'
     },
     serviceCard: {
       position: 'relative',
       overflow: 'hidden',
       cursor: 'pointer',
-      height: '400px',
-      backgroundColor: '#fff'
+      height: isMobile ? 'auto' : '400px',
+      backgroundColor: '#fff',
+      borderRadius: '8px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+      transition: 'transform 0.3s ease'
     },
     serviceImage: {
       width: '100%',
-      height: '60%',
+      height: isMobile ? '200px' : '60%',
       objectFit: 'cover',
       transition: 'transform 0.5s'
     },
     serviceContent: {
-      padding: '20px',
+      padding: isMobile ? '16px' : '20px',
       backgroundColor: '#fff',
-      height: '40%'
+      height: isMobile ? 'auto' : '40%'
     },
     serviceTitle: {
       color: '#1a5490',
-      fontSize: '20px',
+      fontSize: isMobile ? '18px' : '20px',
       fontWeight: '900',
-      marginBottom: '12px'
+      marginBottom: isMobile ? '10px' : '12px',
+      textAlign: isMobile ? 'center' : 'left'
     },
     serviceItems: {
       listStyle: 'none',
@@ -317,26 +365,26 @@ export default function StanholeTrading() {
       margin: 0
     },
     serviceItem: {
-      fontSize: '14px',
+      fontSize: isMobile ? '13px' : '14px',
       color: '#666',
-      marginBottom: '6px',
+      marginBottom: isMobile ? '4px' : '6px',
       paddingLeft: '12px',
       position: 'relative'
     },
     industriesSection: {
-      padding: '80px 20px',
+      padding: isMobile ? '50px 20px' : '80px 20px',
       backgroundColor: '#f9fafb'
     },
     industriesGrid: {
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-      gap: '24px'
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(150px, 1fr))',
+      gap: '16px'
     },
     industryCard: {
       backgroundColor: '#fff',
-      padding: '32px 24px',
+      padding: isMobile ? '20px 16px' : '32px 24px',
       textAlign: 'center',
       borderRadius: '8px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
@@ -344,89 +392,90 @@ export default function StanholeTrading() {
       cursor: 'pointer'
     },
     industryIcon: {
-      fontSize: '48px',
-      marginBottom: '12px'
+      fontSize: isMobile ? '36px' : '48px',
+      marginBottom: isMobile ? '8px' : '12px'
     },
     industryName: {
-      fontSize: '16px',
+      fontSize: isMobile ? '14px' : '16px',
       fontWeight: '700',
       color: '#1a5490'
     },
     clientsSection: {
-      padding: '80px 20px',
+      padding: isMobile ? '50px 20px' : '80px 20px',
       backgroundColor: '#fff'
     },
     clientsSectionTitle: {
-      fontSize: '32px',
+      fontSize: isMobile ? '24px' : '32px',
       fontWeight: '900',
       textAlign: 'center',
-      marginBottom: '48px',
+      marginBottom: isMobile ? '32px' : '48px',
       color: '#111'
     },
     clientsGrid: {
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '32px'
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: isMobile ? '16px' : '32px'
     },
     clientCard: {
       backgroundColor: '#f9fafb',
-      padding: '32px',
+      padding: isMobile ? '20px' : '32px',
       borderRadius: '8px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       transition: 'box-shadow 0.3s, transform 0.3s',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      minHeight: isMobile ? '80px' : '120px'
     },
     clientLogo: {
-      maxHeight: '64px',
+      maxHeight: isMobile ? '40px' : '64px',
       width: 'auto',
       opacity: 0.8,
       transition: 'opacity 0.3s'
     },
     statsSection: {
       backgroundColor: '#1a5490',
-      padding: '60px 20px'
+      padding: isMobile ? '40px 20px' : '60px 20px'
     },
     statsContainer: {
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '40px',
+      gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(200px, 1fr))',
+      gap: isMobile ? '20px' : '40px',
       textAlign: 'center'
     },
     statNumber: {
-      fontSize: '48px',
+      fontSize: isMobile ? '36px' : '48px',
       fontWeight: '900',
       color: '#f59e0b',
-      marginBottom: '8px'
+      marginBottom: isMobile ? '4px' : '8px'
     },
     statLabel: {
-      fontSize: '16px',
+      fontSize: isMobile ? '14px' : '16px',
       color: '#fff',
       fontWeight: '600'
     },
     footer: {
       backgroundColor: '#1f2937',
-      padding: '64px 20px',
+      padding: isMobile ? '40px 20px' : '64px 20px',
       color: '#fff'
     },
     footerContainer: {
       maxWidth: '1200px',
       margin: '0 auto',
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '48px'
+      gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: isMobile ? '32px' : '48px'
     },
     footerTitle: {
       color: '#f59e0b',
       fontWeight: '900',
-      fontSize: '18px',
-      marginBottom: '16px'
+      fontSize: isMobile ? '16px' : '18px',
+      marginBottom: isMobile ? '12px' : '16px'
     },
     footerList: {
       listStyle: 'none',
@@ -438,50 +487,53 @@ export default function StanholeTrading() {
       textDecoration: 'none',
       fontWeight: '600',
       display: 'block',
-      marginBottom: '8px'
+      marginBottom: isMobile ? '6px' : '8px',
+      fontSize: isMobile ? '14px' : 'inherit',
+      transition: 'color 0.3s ease'
     },
     footerText: {
       color: '#d1d5db',
-      marginBottom: '8px',
+      marginBottom: isMobile ? '6px' : '8px',
       lineHeight: '1.6',
-      fontSize: '14px'
+      fontSize: isMobile ? '13px' : '14px'
     },
     bottomBar: {
       backgroundColor: '#111',
-      padding: '20px',
+      padding: isMobile ? '16px 20px' : '20px',
       textAlign: 'center'
     },
     bottomBarText: {
       color: '#d1d5db',
-      fontSize: '14px',
-      margin: 0
+      fontSize: isMobile ? '12px' : '14px',
+      margin: 0,
+      lineHeight: '1.4'
     },
     mapContainer: {
       width: '100%',
-      height: '450px',
+      height: isMobile ? '300px' : '450px',
       borderRadius: '8px',
       overflow: 'hidden',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      marginTop: '20px'
+      marginTop: isMobile ? '20px' : '20px'
     },
     floatingContact: {
       position: 'fixed',
-      right: '30px',
-      bottom: '30px',
+      right: isMobile ? '16px' : '30px',
+      bottom: isMobile ? '16px' : '30px',
       display: 'flex',
       flexDirection: 'column',
-      gap: '16px',
+      gap: '12px',
       zIndex: 999
     },
     floatingBtn: {
-      width: '60px',
-      height: '60px',
+      width: isMobile ? '50px' : '60px',
+      height: isMobile ? '50px' : '60px',
       borderRadius: '50%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       color: '#fff',
-      fontSize: '26px',
+      fontSize: isMobile ? '22px' : '26px',
       textDecoration: 'none',
       boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
       transition: 'all 0.3s ease',
@@ -511,15 +563,27 @@ export default function StanholeTrading() {
             <img 
               src="/assets/stanicon.jpg" 
               alt="Stanhole Trading & Projects" 
-              style={{ height: '60px', width: 'auto' }}
+              style={{ height: isMobile ? '50px' : '60px', width: 'auto' }}
             />
              <div>
-              <div style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '-0.5px', color: '#1e3a5f' }}>STANHOLE</div>
-              <div style={{ fontSize: '11px', fontWeight: '700', letterSpacing: '0.5px', color: '#666' }}>TRADING & PROJECTS</div>
+              <div style={{ 
+                fontSize: isMobile ? '20px' : '24px', 
+                fontWeight: '900', 
+                letterSpacing: '-0.5px', 
+                color: '#1e3a5f',
+                lineHeight: '1' 
+              }}>STANHOLE</div>
+              <div style={{ 
+                fontSize: isMobile ? '9px' : '11px', 
+                fontWeight: '700', 
+                letterSpacing: '0.5px', 
+                color: '#666',
+                lineHeight: '1.2'
+              }}>TRADING & PROJECTS</div>
             </div>
           </div>
 
-          <div style={{ ...styles.navLinks, ...(window.innerWidth < 768 ? { display: 'none' } : {}) }}>
+          <div style={styles.navLinks}>
             <a href="#about" style={styles.navLink}>ABOUT</a>
             <a href="#services" style={styles.navLink}>SERVICES</a>
             <a href="#industries" style={styles.navLink}>INDUSTRIES</a>
@@ -528,7 +592,7 @@ export default function StanholeTrading() {
           </div>
 
           <button
-            style={{ ...styles.mobileMenuBtn, ...(window.innerWidth < 768 ? { display: 'block' } : {}) }}
+            style={styles.mobileMenuBtn}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? '✕' : '☰'}
@@ -537,11 +601,11 @@ export default function StanholeTrading() {
 
         {mobileMenuOpen && (
           <div style={styles.mobileMenu}>
-            <a href="#about" style={{ ...styles.navLink, display: 'block', padding: '12px 0' }}>ABOUT</a>
-            <a href="#services" style={{ ...styles.navLink, display: 'block', padding: '12px 0' }}>SERVICES</a>
-            <a href="#industries" style={{ ...styles.navLink, display: 'block', padding: '12px 0' }}>INDUSTRIES</a>
-            <a href="#clients" style={{ ...styles.navLink, display: 'block', padding: '12px 0' }}>CLIENTS</a>
-            <a href="#contact" style={{ ...styles.contactBtn, display: 'block', textAlign: 'center', marginTop: '12px' }}>CONTACT US</a>
+            <a href="#about" style={{ ...styles.navLink, display: 'block', padding: '16px 0', borderBottom: '1px solid #f0f0f0' }} onClick={() => setMobileMenuOpen(false)}>ABOUT</a>
+            <a href="#services" style={{ ...styles.navLink, display: 'block', padding: '16px 0', borderBottom: '1px solid #f0f0f0' }} onClick={() => setMobileMenuOpen(false)}>SERVICES</a>
+            <a href="#industries" style={{ ...styles.navLink, display: 'block', padding: '16px 0', borderBottom: '1px solid #f0f0f0' }} onClick={() => setMobileMenuOpen(false)}>INDUSTRIES</a>
+            <a href="#clients" style={{ ...styles.navLink, display: 'block', padding: '16px 0', borderBottom: '1px solid #f0f0f0' }} onClick={() => setMobileMenuOpen(false)}>CLIENTS</a>
+            <a href="#contact" style={{ ...styles.contactBtn, display: 'block', textAlign: 'center', marginTop: '16px', padding: '14px' }} onClick={() => setMobileMenuOpen(false)}>CONTACT US</a>
           </div>
         )}
       </nav>
@@ -602,7 +666,7 @@ export default function StanholeTrading() {
             <p style={styles.aboutText}>
               Our experienced staff are qualified to work with electricity and we operate a quality system based on ISO 9000 standards. We provide comprehensive electrical and mechanical solutions from inception to completion.
             </p>
-            <h3 style={{ fontSize: '20px', fontWeight: '900', color: '#1a5490', marginBottom: '16px' }}>OUR VALUES</h3>
+            <h3 style={{ fontSize: isMobile ? '18px' : '20px', fontWeight: '900', color: '#1a5490', marginBottom: '16px', textAlign: isMobile ? 'center' : 'left' }}>OUR VALUES</h3>
             <div style={styles.valuesList}>
               <div style={styles.valueItem}>✓ Honesty</div>
               <div style={styles.valueItem}>✓ Respect</div>
@@ -710,7 +774,7 @@ export default function StanholeTrading() {
               <img 
                 src="/assets/stanhole.jpg" 
                 alt="Stanhole Trading & Projects" 
-                style={{ height: '60px', width: 'auto' }}
+                style={{ height: isMobile ? '50px' : '60px', width: 'auto' }}
               />
             </div>
             <p style={styles.footerText}>
@@ -762,7 +826,7 @@ export default function StanholeTrading() {
             </p>
             <div style={{ marginTop: '16px' }}>
               <h4 style={{ ...styles.footerTitle, marginBottom: '8px' }}>BRANCHES</h4>
-              <p style={{ ...styles.footerText, fontSize: '13px' }}>
+              <p style={{ ...styles.footerText, fontSize: isMobile ? '12px' : '13px' }}>
                 • Lephalale<br />
                 • Polokwane<br />
                 • Witbank<br />
@@ -773,8 +837,8 @@ export default function StanholeTrading() {
         </div>
 
         {/* Full Width Map Section */}
-        <div style={{ marginTop: '60px' }}>
-          <h3 style={{ ...styles.footerTitle, textAlign: 'center', marginBottom: '30px' }}>FIND US</h3>
+        <div style={{ marginTop: '40px' }}>
+          <h3 style={{ ...styles.footerTitle, textAlign: 'center', marginBottom: '20px' }}>FIND US</h3>
           <div style={styles.mapContainer}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3586.8245193476856!2d28.230698!3d-26.061749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e956f8b5e5e5e5f%3A0x5e5e5e5e5e5e5e5e!2s61%20Bergrivier%20Dr%2C%20Terenure%2C%20Kempton%20Park%2C%201619!5e0!3m2!1sen!2sza!4v1635789456789!5m2!1sen!2sza"
@@ -784,6 +848,7 @@ export default function StanholeTrading() {
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              title="Stanhole Trading Location"
             />
           </div>
         </div>
@@ -813,7 +878,7 @@ export default function StanholeTrading() {
           }}
           title="WhatsApp"
         >
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+          <svg width={isMobile ? "24" : "30"} height={isMobile ? "24" : "30"} viewBox="0 0 24 24" fill="currentColor">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
           </svg>
         </a>
@@ -830,7 +895,7 @@ export default function StanholeTrading() {
           }}
           title="Email"
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+          <svg width={isMobile ? "22" : "28"} height={isMobile ? "22" : "28"} viewBox="0 0 24 24" fill="currentColor">
             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
           </svg>
         </a>
@@ -847,7 +912,7 @@ export default function StanholeTrading() {
           }}
           title="Call"
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+          <svg width={isMobile ? "22" : "28"} height={isMobile ? "22" : "28"} viewBox="0 0 24 24" fill="currentColor">
             <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
           </svg>
         </a>
@@ -865,7 +930,7 @@ export default function StanholeTrading() {
             }}
             title="Scroll to top"
           >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+            <svg width={isMobile ? "22" : "28"} height={isMobile ? "22" : "28"} viewBox="0 0 24 24" fill="currentColor">
               <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
             </svg>
           </button>
