@@ -108,11 +108,15 @@ export default function StanholeTrading() {
       alignItems: 'center',
       height: '80px'
     },
-    logo: {
+   
+   
+   logo: {
       display: 'flex',
       alignItems: 'center',
-      gap: '12px'
+      gap: '12px',
+      height: '100%'
     },
+    
     navLinks: {
       display: isMobile ? 'none' : 'flex',
       alignItems: 'center',
@@ -561,7 +565,7 @@ export default function StanholeTrading() {
         <div style={styles.navContainer}>
           <div style={styles.logo}>
             <img 
-              src="/assets/stanicon.jpg" 
+              src="/assets/stanicon.png" 
               alt="Stanhole Trading & Projects" 
               style={{ height: isMobile ? '50px' : '60px', width: 'auto' }}
             />
